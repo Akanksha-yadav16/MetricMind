@@ -1,0 +1,11 @@
+order_id,customer_id,order_date,total_amount,status
+1,1,2026-07-01,77500,Delivered
+2,2,2026-07-02,45000,Delivered
+3,3,2026-07-03,2500,Shipped
+4,4,2026-07-04,18800,Delivered
+5,5,2026-07-05,900,Pending
+6,6,2026-07-06,6500,Delivered
+7,7,2026-07-07,12000,Shipped
+8,8,2026-07-08,3500,Delivered
+9,9,2026-07-09,1500,Pending
+10,10,2026-07-10,800,Delivered
