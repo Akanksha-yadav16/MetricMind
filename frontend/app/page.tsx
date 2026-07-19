@@ -1,13 +1,9 @@
+import ChatHeader from "../components/layout/ChatHeader";
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-slate-950 text-white flex flex-col">
-      {/* Header */}
-      <header className="border-b border-slate-800 p-5">
-        <h1 className="text-3xl font-bold">MetricMind</h1>
-        <p className="text-slate-400 mt-1">
-          AI-Powered Business Intelligence Assistant
-        </p>
-      </header>
+      <ChatHeader />
 
       {/* Chat Area */}
       <section className="flex-1 p-6 space-y-6 overflow-y-auto">
@@ -18,7 +14,7 @@ export default function Home() {
           </div>
         </div>
 
-        {}
+        {/* AI Message */}
         <div className="flex justify-start">
           <div className="bg-slate-800 px-4 py-3 rounded-2xl max-w-xl">
             European margins declined primarily because shipping costs
