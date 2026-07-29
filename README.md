@@ -1,37 +1,116 @@
-# MetricMind
+# 📊 MetricMind – AI-Powered Data Analytics Platform
 
-## Project Overview
-MetricMind is a Data Lakehouse project built using Snowflake. The project stores customer, product, order, and order item data for business analytics and reporting.
+MetricMind is a cloud-based analytics platform that combines **Snowflake**, **FastAPI**, and a **semantic data layer** to provide business metrics through REST APIs. It demonstrates modern data engineering practices, including secure configuration management, SQL-based analytics, API development, and automated testing.
 
-## Technologies Used
+---
+
+## 🚀 Features
+
+- Semantic layer for business metrics
+- FastAPI REST API
+- Snowflake cloud data warehouse integration
+- Secure configuration using `.env`
+- Automated API testing with Pytest
+- Interactive API documentation with Swagger UI
+- Modular and maintainable project structure
+
+---
+
+## 🛠️ Tech Stack
+
+- Python
+- FastAPI
 - Snowflake
 - SQL
-- Git
-- GitHub
+- Pandas
+- Pytest
+- Uvicorn
+- python-dotenv
+- Git & GitHub
 
-## Project Structure
-```
+---
+
+## 📁 Project Structure
+
+```text
 MetricMind/
-├── README.md
+│
+├── semantic_layer/
+│   ├── api.py
+│   ├── metrics.py
+│
+├── sql/
+├── tests/
+├── docs/
 ├── data/
-│   ├── customers.csv
-│   ├── products.csv
-│   ├── orders.csv
-│   └── order_items.csv
-└── sql/
-    ├── database_setup.sql
-    ├── load_data.sql
-    └── verify_data.sql
+├── notebooks/
+├── requirements.txt
+├── README.md
+└── .gitignore
 ```
 
-## Database Tables
-- CUSTOMERS
-- ORDERS
-- PRODUCTS
-- ORDER_ITEMS
+---
 
-## Status
-- Database created
-- Schemas created
-- Data loaded successfully
-- Data verified
+## ⚡ API Endpoints
+
+| Method | Endpoint | Description |
+|---------|----------|-------------|
+| GET | `/` | API Status |
+| GET | `/total-orders` | Total Orders |
+| GET | `/total-revenue` | Total Revenue |
+| GET | `/average-order-value` | Average Order Value |
+
+---
+
+## ▶️ Running the Project
+
+```bash
+git clone <repository-url>
+cd MetricMind
+
+python -m venv venv
+
+venv\Scripts\activate
+
+pip install -r requirements.txt
+
+uvicorn semantic_layer.api:app --reload
+```
+
+Then open:
+
+```
+http://127.0.0.1:8000/docs
+```
+
+---
+
+## 🧪 Running Tests
+
+```bash
+pytest
+```
+
+---
+
+## 🔒 Security
+
+Sensitive credentials are stored in a `.env` file and are excluded from version control using `.gitignore`.
+
+---
+
+## 📈 Future Improvements
+
+- Authentication
+- Dashboard Integration
+- Docker Support
+- CI/CD Pipeline
+- AI-powered insights
+
+---
+
+## 👨‍💻 Author
+
+**Nikhil Krishna R**
+
+Data Analyst | Python | SQL | Power BI | FastAPI | Snowflake
