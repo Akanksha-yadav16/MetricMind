@@ -1,14 +1,17 @@
+import os
 import snowflake.connector
+from dotenv import load_dotenv
 
+load_dotenv()
 
 def get_connection():
     return snowflake.connector.connect(
-        user="Nikhil",
-        password="Nikhil20021234",
-        account="gg24656.ap-southeast-7.aws",
-        warehouse="METRICMIND_WH",
-        database="METRICMIND_DB",
-        schema="ANALYTICS"
+        user=os.getenv("SNOWFLAKE_USER"),
+        password=os.getenv("SNOWFLAKE_PASSWORD"),
+        account=os.getenv("SNOWFLAKE_ACCOUNT"),
+        warehouse=os.getenv("SNOWFLAKE_WAREHOUSE"),
+        database=os.getenv("SNOWFLAKE_DATABASE"),
+        schema=os.getenv("SNOWFLAKE_SCHEMA")
     )
 
 def get_total_orders():
