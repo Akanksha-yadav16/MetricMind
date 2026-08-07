@@ -140,3 +140,26 @@ def get_revenue_by_product():
     conn.close()
 
     return result
+
+def get_product_report():
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT
+            P.PRODUCT_NAME,
+            SUM(OI.QUANTITY) AS TOTAL_QUANTITY,
+            SUM((OI.UNIT_PRICE * OI.QUANTITY) - OI.DISCOUNT) AS TOTAL_REVENUE
+        FROM ORDER_ITEMS OI
+        JOIN PRODUCTS P
+            ON OI.PRODUCT_ID = P.PRODUCT_ID
+        GROUP BY P.PRODUCT_NAME
+        ORDER BY TOTAL_REVENUE DESC;
+    """)
+
+    result = cur.fetchall()
+
+    cur.close()
+    conn.close()
+
+    return result
