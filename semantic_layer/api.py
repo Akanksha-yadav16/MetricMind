@@ -12,47 +12,191 @@ from semantic_layer.metrics import (
     get_product_report,
 )
 
+
 app = FastAPI(title="MetricMind API")
 
-# Allow requests from Next.js frontend
+
+# --------------------------------------------------
+# CORS
+# --------------------------------------------------
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://192.168.1.101:3000",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 
+# --------------------------------------------------
+# HOME
+# --------------------------------------------------
+
 @app.get("/")
 def home():
-    return {"message": "MetricMind API is running!"}
+    return {
+        "message": "MetricMind API is running!"
+    }
 
+
+# --------------------------------------------------
+# DASHBOARD
+# --------------------------------------------------
+
+@app.get("/dashboard-summary")
+def dashboard_summary():
+
+    top_product = get_top_selling_product()
+    top_customer = get_top_customer()
+
+    revenue = get_revenue_by_product()
+
+    return {
+        "total_orders": get_total_orders(),
+
+        "total_customers": get_total_customers(),
+
+        "total_revenue": float(
+            get_total_revenue()
+        ),
+
+        "average_order_value": float(
+            get_average_order_value()
+        ),
+
+        "top_product": {
+            "product": top_product[0],
+            "quantity_sold": top_product[1],
+        },
+
+        "top_customer": {
+            "customer": top_customer[0],
+            "total_spent": float(top_customer[1]),
+        },
+
+        "revenue_by_product": [
+            {
+                "product": row[0],
+                "revenue": float(row[1]),
+            }
+            for row in revenue
+        ],
+    }
+
+
+# --------------------------------------------------
+# ANALYTICS
+# --------------------------------------------------
+
+@app.get("/analytics-summary")
+def analytics_summary():
+
+    top_product = get_top_selling_product()
+    top_customer = get_top_customer()
+
+    return {
+        "total_orders": get_total_orders(),
+
+        "total_customers": get_total_customers(),
+
+        "total_revenue": float(
+            get_total_revenue()
+        ),
+
+        "average_order_value": float(
+            get_average_order_value()
+        ),
+
+        "top_product": {
+            "product": top_product[0],
+            "quantity_sold": top_product[1],
+        },
+
+        "top_customer": {
+            "customer": top_customer[0],
+            "total_spent": float(top_customer[1]),
+        },
+    }
+
+
+# --------------------------------------------------
+# REPORTS
+# --------------------------------------------------
+
+@app.get("/reports-summary")
+def reports_summary():
+
+    product_report = get_product_report()
+    revenue_by_product = get_revenue_by_product()
+
+    return {
+        "product_report": [
+            {
+                "product": row[0],
+                "quantity": row[1],
+                "revenue": float(row[2]),
+            }
+            for row in product_report
+        ],
+
+        "revenue_by_product": [
+            {
+                "product": row[0],
+                "revenue": float(row[1]),
+            }
+            for row in revenue_by_product
+        ],
+    }
+
+
+# --------------------------------------------------
+# INDIVIDUAL API ENDPOINTS
+# --------------------------------------------------
 
 @app.get("/total-orders")
 def total_orders():
-    return {"total_orders": get_total_orders()}
+
+    return {
+        "total_orders": get_total_orders()
+    }
 
 
 @app.get("/total-customers")
 def total_customers():
-    return {"total_customers": get_total_customers()}
+
+    return {
+        "total_customers": get_total_customers()
+    }
 
 
 @app.get("/total-revenue")
 def total_revenue():
-    return {"total_revenue": float(get_total_revenue())}
+
+    return {
+        "total_revenue": float(
+            get_total_revenue()
+        )
+    }
 
 
 @app.get("/average-order-value")
 def average_order_value():
+
     return {
-        "average_order_value": float(get_average_order_value())
+        "average_order_value": float(
+            get_average_order_value()
+        )
     }
 
 
 @app.get("/top-selling-product")
 def top_selling_product():
+
     product = get_top_selling_product()
 
     return {
@@ -63,16 +207,20 @@ def top_selling_product():
 
 @app.get("/top-customer")
 def top_customer():
+
     customer = get_top_customer()
 
     return {
         "customer": customer[0],
-        "total_spent": float(customer[1]),
+        "total_spent": float(
+            customer[1]
+        ),
     }
 
 
 @app.get("/revenue-by-product")
 def revenue_by_product():
+
     revenue = get_revenue_by_product()
 
     return [
@@ -86,6 +234,7 @@ def revenue_by_product():
 
 @app.get("/product-report")
 def product_report():
+
     report = get_product_report()
 
     return [

@@ -1,36 +1,89 @@
-const API_BASE_URL = "http://127.0.0.1:8000";
+const API = "http://127.0.0.1:8000";
 
-export async function getTotalRevenue() {
-  const response = await fetch(`${API_BASE_URL}/total-revenue`);
-  return await response.json();
+async function fetchAPI(endpoint) {
+  try {
+    const response = await fetch(`${API}${endpoint}`, {
+      method: "GET",
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `API request failed: ${endpoint} - ${response.status}`
+      );
+    }
+
+    const data = await response.json();
+
+    console.log(`MetricMind API ${endpoint}:`, data);
+
+    return data;
+  } catch (error) {
+    console.error(`MetricMind API Error ${endpoint}:`, error);
+    throw error;
+  }
 }
 
+
+// ==========================================
+// DASHBOARD
+// ==========================================
+
+export async function getDashboardSummary() {
+  return fetchAPI("/dashboard-summary");
+}
+
+
+// ==========================================
+// ANALYTICS
+// ==========================================
+
+export async function getAnalyticsSummary() {
+  return fetchAPI("/analytics-summary");
+}
+
+
+// ==========================================
+// REPORTS
+// ==========================================
+
+export async function getReportsSummary() {
+  return fetchAPI("/reports-summary");
+}
+
+
+// ==========================================
+// INDIVIDUAL FUNCTIONS
+// ==========================================
+
 export async function getTotalOrders() {
-  const response = await fetch(`${API_BASE_URL}/total-orders`);
-  return await response.json();
+  return fetchAPI("/total-orders");
 }
 
 export async function getTotalCustomers() {
-  const response = await fetch(`${API_BASE_URL}/total-customers`);
-  return await response.json();
+  return fetchAPI("/total-customers");
+}
+
+export async function getTotalRevenue() {
+  return fetchAPI("/total-revenue");
 }
 
 export async function getAverageOrderValue() {
-  const response = await fetch(`${API_BASE_URL}/average-order-value`);
-  return await response.json();
-}
-
-export async function getRevenueByProduct() {
-  const response = await fetch(`${API_BASE_URL}/revenue-by-product`);
-  return await response.json();
+  return fetchAPI("/average-order-value");
 }
 
 export async function getTopSellingProduct() {
-  const response = await fetch(`${API_BASE_URL}/top-selling-product`);
-  return await response.json();
+  return fetchAPI("/top-selling-product");
 }
 
 export async function getTopCustomer() {
-  const response = await fetch(`${API_BASE_URL}/top-customer`);
-  return await response.json();
+  return fetchAPI("/top-customer");
+}
+
+export async function getRevenueByProduct() {
+  return fetchAPI("/revenue-by-product");
+}
+
+export async function getProductReport() {
+  return fetchAPI("/product-report");
 }

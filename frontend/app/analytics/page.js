@@ -1,115 +1,382 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Sidebar from "@/components/layout/Sidebar";
+import { getAnalyticsSummary } from "@/services/api";
+
+const CACHE_KEY = "metricmind_analytics";
+const CACHE_TIME = 5 * 60 * 1000; // 5 minutes
 
 export default function AnalyticsPage() {
-  return (
-    <div className="flex bg-gray-100 min-h-screen">
+  const [analytics, setAnalytics] = useState({
+    orders: null,
+    customers: null,
+    revenue: null,
+    averageOrder: null,
+    topProduct: null,
+    topCustomer: null,
+  });
 
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadAnalytics() {
+      /*
+       * STEP 1
+       * Load cached data immediately.
+       */
+      try {
+        const cached = sessionStorage.getItem(CACHE_KEY);
+
+        if (cached) {
+          const parsed = JSON.parse(cached);
+
+          const cacheAge = Date.now() - parsed.timestamp;
+
+          if (cacheAge < CACHE_TIME && isMounted) {
+            setAnalytics(parsed.data);
+            setLoading(false);
+          }
+        }
+      } catch (error) {
+        console.error("Analytics cache read error:", error);
+      }
+
+      /*
+       * STEP 2
+       * Make ONLY ONE API REQUEST.
+       */
+      try {
+        const data = await getAnalyticsSummary();
+
+        if (!isMounted) return;
+
+        const formattedData = {
+          orders: data.total_orders ?? 0,
+
+          customers: data.total_customers ?? 0,
+
+          revenue: data.total_revenue ?? 0,
+
+          averageOrder: data.average_order_value ?? 0,
+
+          topProduct: data.top_product?.product || "No data",
+
+          topCustomer: data.top_customer?.customer || "No data",
+        };
+
+        /*
+         * Update UI.
+         */
+        setAnalytics(formattedData);
+        setLoading(false);
+
+        /*
+         * Save data to browser cache.
+         */
+        try {
+          sessionStorage.setItem(
+            CACHE_KEY,
+            JSON.stringify({
+              timestamp: Date.now(),
+              data: formattedData,
+            })
+          );
+        } catch (error) {
+          console.error("Analytics cache write error:", error);
+        }
+      } catch (error) {
+        console.error("Analytics API Error:", error);
+
+        if (!isMounted) return;
+
+        setAnalytics((previous) => {
+          /*
+           * If cached data is already displayed,
+           * keep it instead of replacing it with errors.
+           */
+          if (
+            previous.orders !== null ||
+            previous.customers !== null ||
+            previous.revenue !== null
+          ) {
+            return previous;
+          }
+
+          return {
+            orders: "Error",
+            customers: "Error",
+            revenue: "Error",
+            averageOrder: "Error",
+            topProduct: "Error",
+            topCustomer: "Error",
+          };
+        });
+
+        setLoading(false);
+      }
+    }
+
+    loadAnalytics();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  return (
+    <div className="flex min-h-screen bg-gray-50">
+
+      {/* Sidebar */}
       <Sidebar />
 
+      {/* Main Content */}
       <main className="flex-1 p-8">
 
-        <h1 className="text-4xl font-bold text-gray-800">
-          Analytics
-        </h1>
+        {/* Page Header */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-gray-900">
+            Analytics
+          </h1>
 
-        <p className="text-gray-500 mt-2">
-          Business Intelligence Dashboard
-        </p>
+          <p className="text-gray-600 mt-2 text-base">
+            Business Intelligence Dashboard
+          </p>
 
-        {/* KPI Cards */}
+          {loading && (
+            <p className="text-sm text-gray-400 mt-3">
+              Loading analytics data...
+            </p>
+          )}
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
 
-          <div className="bg-white rounded-2xl shadow p-6">
-            <h3 className="text-gray-500 text-sm">
-              Revenue Growth
-            </h3>
+        {/* KPI CARDS */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
-            <p className="text-3xl font-bold mt-2 text-green-600">
-              +18%
+          {/* Total Orders */}
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-md p-6">
+            <p className="text-gray-600 text-sm font-semibold">
+              Total Orders
+            </p>
+
+            <p className="text-3xl font-bold text-gray-900 mt-3">
+              {analytics.orders !== null
+                ? analytics.orders
+                : "Loading..."}
+            </p>
+
+            <p className="text-gray-500 text-sm mt-2">
+              Orders received
             </p>
           </div>
 
-          <div className="bg-white rounded-2xl shadow p-6">
-            <h3 className="text-gray-500 text-sm">
-              Total Products
-            </h3>
 
-            <p className="text-3xl font-bold mt-2">
-              10
+          {/* Total Customers */}
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-md p-6">
+            <p className="text-gray-600 text-sm font-semibold">
+              Total Customers
+            </p>
+
+            <p className="text-3xl font-bold text-gray-900 mt-3">
+              {analytics.customers !== null
+                ? analytics.customers
+                : "Loading..."}
+            </p>
+
+            <p className="text-gray-500 text-sm mt-2">
+              Customers with orders
             </p>
           </div>
 
-          <div className="bg-white rounded-2xl shadow p-6">
-            <h3 className="text-gray-500 text-sm">
-              Active Customers
-            </h3>
 
-            <p className="text-3xl font-bold mt-2">
-              10
+          {/* Total Revenue */}
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-md p-6">
+            <p className="text-gray-600 text-sm font-semibold">
+              Total Revenue
+            </p>
+
+            <p className="text-3xl font-bold text-blue-700 mt-3">
+              {analytics.revenue !== null
+                ? `₹${Number(
+                    analytics.revenue
+                  ).toLocaleString("en-IN")}`
+                : "Loading..."}
+            </p>
+
+            <p className="text-gray-500 text-sm mt-2">
+              Total sales revenue
             </p>
           </div>
 
-          <div className="bg-white rounded-2xl shadow p-6">
-            <h3 className="text-gray-500 text-sm">
-              Monthly Sales
-            </h3>
 
-            <p className="text-3xl font-bold mt-2 text-blue-600">
-              ₹168K
+          {/* Average Order */}
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-md p-6">
+            <p className="text-gray-600 text-sm font-semibold">
+              Average Order
+            </p>
+
+            <p className="text-3xl font-bold text-green-700 mt-3">
+              {analytics.averageOrder !== null
+                ? `₹${Number(
+                    analytics.averageOrder
+                  ).toLocaleString("en-IN")}`
+                : "Loading..."}
+            </p>
+
+            <p className="text-gray-500 text-sm mt-2">
+              Average order value
             </p>
           </div>
 
         </div>
 
-        {/* Charts */}
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+        {/* BUSINESS INSIGHTS */}
+        <div className="mt-8">
 
-          <div className="bg-white rounded-2xl shadow p-6 h-[420px]">
-
-            <h2 className="text-xl font-semibold mb-6">
-              Revenue Trend
-            </h2>
-
-          </div>
-
-          <div className="bg-white rounded-2xl shadow p-6 h-[420px]">
-
-            <h2 className="text-xl font-semibold mb-6">
-              Revenue Distribution
-            </h2>
-
-          </div>
-
-        </div>
-
-        {/* AI Insights */}
-
-        <div className="bg-white rounded-2xl shadow p-6 mt-8">
-
-          <h2 className="text-xl font-semibold mb-4">
-            AI Business Insights
+          <h2 className="text-2xl font-bold text-gray-900 mb-5">
+            Business Insights
           </h2>
 
-          <ul className="space-y-3 text-gray-700">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-            <li>📈 Revenue is growing steadily.</li>
+            {/* Top Selling Product */}
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-md p-6">
 
-            <li>💻 Laptop contributes the highest revenue.</li>
+              <div className="flex items-center justify-between">
 
-            <li>🎧 Headphones sold the highest quantity.</li>
+                <div>
+                  <p className="text-gray-600 text-sm font-semibold">
+                    Top Selling Product
+                  </p>
 
-            <li>👤 John Doe is currently the highest-value customer.</li>
+                  <p className="text-2xl font-bold text-gray-900 mt-3">
+                    {analytics.topProduct !== null
+                      ? analytics.topProduct
+                      : "Loading..."}
+                  </p>
 
-          </ul>
+                  <p className="text-gray-500 text-sm mt-2">
+                    Product with highest quantity sold
+                  </p>
+                </div>
+
+                <div className="text-4xl">
+                  🏆
+                </div>
+
+              </div>
+
+            </div>
+
+
+            {/* Top Customer */}
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-md p-6">
+
+              <div className="flex items-center justify-between">
+
+                <div>
+                  <p className="text-gray-600 text-sm font-semibold">
+                    Highest Value Customer
+                  </p>
+
+                  <p className="text-2xl font-bold text-gray-900 mt-3">
+                    {analytics.topCustomer !== null
+                      ? analytics.topCustomer
+                      : "Loading..."}
+                  </p>
+
+                  <p className="text-gray-500 text-sm mt-2">
+                    Customer with highest total spending
+                  </p>
+                </div>
+
+                <div className="text-4xl">
+                  👤
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        {/* ANALYTICS SUMMARY */}
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-md p-6 mt-8">
+
+          <h2 className="text-xl font-bold text-gray-900">
+            Analytics Summary
+          </h2>
+
+          <p className="text-gray-600 mt-2">
+            Key business performance indicators from your sales data.
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-6">
+
+            {/* Revenue Performance */}
+            <div className="bg-blue-50 border border-blue-200 rounded-xl p-5">
+
+              <p className="text-blue-800 font-semibold">
+                Revenue Performance
+              </p>
+
+              <p className="text-gray-900 font-bold text-lg mt-2">
+                ₹
+                {analytics.revenue !== null
+                  ? Number(
+                      analytics.revenue
+                    ).toLocaleString("en-IN")
+                  : "Loading..."}
+              </p>
+
+            </div>
+
+
+            {/* Customer Base */}
+            <div className="bg-green-50 border border-green-200 rounded-xl p-5">
+
+              <p className="text-green-800 font-semibold">
+                Customer Base
+              </p>
+
+              <p className="text-gray-900 font-bold text-lg mt-2">
+                {analytics.customers !== null
+                  ? analytics.customers
+                  : "Loading..."}{" "}
+                customers
+              </p>
+
+            </div>
+
+
+            {/* Order Performance */}
+            <div className="bg-purple-50 border border-purple-200 rounded-xl p-5">
+
+              <p className="text-purple-800 font-semibold">
+                Order Performance
+              </p>
+
+              <p className="text-gray-900 font-bold text-lg mt-2">
+                {analytics.orders !== null
+                  ? analytics.orders
+                  : "Loading..."}{" "}
+                orders
+              </p>
+
+            </div>
+
+          </div>
 
         </div>
 
       </main>
-
     </div>
   );
 }

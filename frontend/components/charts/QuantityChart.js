@@ -10,12 +10,11 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-export default function RevenueChart({ data }) {
+export default function QuantityChart({ data }) {
   return (
     <div className="w-full">
-
       <h2 className="text-xl font-bold text-gray-900 mb-5">
-        Revenue by Product
+        Quantity Sold by Product
       </h2>
 
       <ResponsiveContainer width="100%" height={350}>
@@ -46,6 +45,7 @@ export default function RevenueChart({ data }) {
           />
 
           <YAxis
+            allowDecimals={false}
             tick={{
               fill: "#1f2937",
               fontSize: 12,
@@ -61,20 +61,17 @@ export default function RevenueChart({ data }) {
               color: "#111827",
               fontWeight: 600,
             }}
-            formatter={(value) =>
-              `₹${Number(value).toLocaleString("en-IN")}`
-            }
+            formatter={(value) => [`${value}`, "Quantity"]}
           />
 
           <Bar
-            dataKey="revenue"
-            name="Revenue"
-            fill="#2563eb"
+            dataKey="quantity"
+            name="Quantity"
+            fill="#16a34a"
             radius={[6, 6, 0, 0]}
           />
         </BarChart>
       </ResponsiveContainer>
-
     </div>
   );
 }
