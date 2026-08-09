@@ -1,0 +1,267 @@
+# ================================
+# Environment Variables / Secrets
+# ================================
+.env
+.env.*
+!.env.example
+
+
+# ================================
+# Python
+# ================================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Python packaging
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Testing / Coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+
+# ================================
+# Jupyter Notebook
+# ================================
+.ipynb_checkpoints/
+
+
+# ================================
+# Node / Next.js
+# ================================
+node_modules/
+.next/
+out/
+dist/
+
+# npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Vercel
+.vercel/
+
+
+# ================================
+# IDE / Editors
+# ================================
+.vscode/
+.idea/
+
+# VS Code local history
+.history/
+
+# Visual Studio
+.vs/
+
+
+# ================================
+# Operating System
+# ================================
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+
+# Linux
+*~
+
+
+# ================================
+# Logs
+# ================================
+*.log
+logs/
+
+
+# ================================
+# Temporary Files
+# ================================
+*.tmp
+*.temp
+*.swp
+*.swo
+
+
+# ================================
+# Data / Generated Files
+# ================================
+# Uncomment these if you don't want to upload generated data
+# *.csv
+# *.xlsx
+# *.xls
+
+# Generated reports
+reports/generated/
+output/
+
+
+# ================================
+# Local Database Files
+# ================================
+*.sqlite
+*.sqlite3
+*.db
+
+
+# ================================
+# Secrets / Credentials
+# ================================
+*.pem
+*.key
+*.crt
+credentials.json
+secrets.json# ================================
+# Environment Variables / Secrets
+# ================================
+.env
+.env.*
+!.env.example
+
+
+# ================================
+# Python
+# ================================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Python packaging
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Testing / Coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+
+# ================================
+# Jupyter Notebook
+# ================================
+.ipynb_checkpoints/
+
+
+# ================================
+# Node / Next.js
+# ================================
+node_modules/
+.next/
+out/
+dist/
+
+# npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Vercel
+.vercel/
+
+
+# ================================
+# IDE / Editors
+# ================================
+.vscode/
+.idea/
+
+# VS Code local history
+.history/
+
+# Visual Studio
+.vs/
+
+
+# ================================
+# Operating System
+# ================================
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+
+# Linux
+*~
+
+
+# ================================
+# Logs
+# ================================
+*.log
+logs/
+
+
+# ================================
+# Temporary Files
+# ================================
+*.tmp
+*.temp
+*.swp
+*.swo
+
+
+# ================================
+# Data / Generated Files
+# ================================
+# Uncomment these if you don't want to upload generated data
+# *.csv
+# *.xlsx
+# *.xls
+
+# Generated reports
+reports/generated/
+output/
+
+
+# ================================
+# Local Database Files
+# ================================
+*.sqlite
+*.sqlite3
+*.db
+
+
+# ================================
+# Secrets / Credentials
+# ================================
+*.pem
+*.key
+*.crt
+credentials.json
+secrets.json
