@@ -9,12 +9,24 @@ load_dotenv()
 
 # Short in-memory cache keeps the dashboard/report pages fast while avoiding
 # repeated Snowflake queries during normal navigation.
-_CACHE_TTL = 60  # seconds
+_CACHE_TTL = max(10, int(os.getenv("METRIC_CACHE_TTL", "60")))  # seconds
 _cache = {}
 _cache_lock = Lock()
 
 
 def get_connection():
+    required = [
+        "SNOWFLAKE_USER",
+        "SNOWFLAKE_PASSWORD",
+        "SNOWFLAKE_ACCOUNT",
+        "SNOWFLAKE_WAREHOUSE",
+        "SNOWFLAKE_DATABASE",
+        "SNOWFLAKE_SCHEMA",
+    ]
+    missing = [name for name in required if not os.getenv(name)]
+    if missing:
+        raise RuntimeError("Missing Snowflake configuration: " + ", ".join(missing))
+
     return snowflake.connector.connect(
         user=os.getenv("SNOWFLAKE_USER"),
         password=os.getenv("SNOWFLAKE_PASSWORD"),

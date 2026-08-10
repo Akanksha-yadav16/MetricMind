@@ -1,3 +1,7 @@
+import pytest
+
+pytestmark = pytest.mark.integration
+
 from semantic_layer.metrics import (
     get_total_orders,
     get_total_customers,

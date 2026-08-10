@@ -43,7 +43,11 @@ export default function Sidebar() {
   ];
 
   return (
+<<<<<<< HEAD
     <aside className="w-64 min-h-screen bg-slate-900 text-white shadow-xl">
+=======
+    <aside className="sticky top-0 hidden min-h-screen w-64 shrink-0 bg-slate-900 text-white shadow-xl md:block">
+>>>>>>> final-project
 
       {/* Logo */}
 
@@ -63,7 +67,11 @@ export default function Sidebar() {
 
           const Icon = item.icon;
 
+<<<<<<< HEAD
           const active = pathname === item.href;
+=======
+          const active = pathname === item.href || (item.href !== "/" && pathname.startsWith(`${item.href}/`));
+>>>>>>> final-project
 
           return (
             <Link
