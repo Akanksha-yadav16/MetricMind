@@ -17,22 +17,6 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100%;
-<<<<<<< HEAD
-  background: #f8fafc;
-  color: #111827;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-input,
-textarea,
-select {
-=======
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
@@ -41,36 +25,15 @@ select {
 * { box-sizing: border-box; }
 
 input, textarea, select {
->>>>>>> final-project
   color: #111827;
   background: #ffffff;
 }
 
-<<<<<<< HEAD
-input::placeholder,
-textarea::placeholder {
-=======
 input::placeholder, textarea::placeholder {
->>>>>>> final-project
   color: #6b7280;
   opacity: 1;
 }
 
-<<<<<<< HEAD
-button {
-  color: #111827;
-}
-
-button:disabled {
-  color: #6b7280;
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  outline: none;
-}
-=======
 button { color: #111827; }
 button:disabled { color: #6b7280; }
 
@@ -95,4 +58,3 @@ input:focus, textarea:focus, select:focus { outline: none; }
 }
 .dark input::placeholder, .dark textarea::placeholder { color: #94a3b8; }
 .dark .hover\:bg-gray-50:hover { background-color: #334155 !important; }
->>>>>>> final-project

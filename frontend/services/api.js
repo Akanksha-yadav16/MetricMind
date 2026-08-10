@@ -1,18 +1,4 @@
 const API = (process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000").replace(/\/$/, "");
-<<<<<<< HEAD
-
-async function fetchAPI(endpoint) {
-  const response = await fetch(`${API}${endpoint}`, {
-    method: "GET",
-    cache: "no-store",
-  });
-
-  if (!response.ok) {
-    throw new Error(`API ${response.status}: ${response.statusText}`);
-  }
-
-  return response.json();
-=======
 const REQUEST_TIMEOUT = 15000;
 
 async function fetchJSON(url, options = {}) {
@@ -44,38 +30,20 @@ async function fetchJSON(url, options = {}) {
 
 async function fetchAPI(endpoint) {
   return fetchJSON(`${API}${endpoint}`, { method: "GET", cache: "no-store" });
->>>>>>> final-project
 }
 
 export const getDashboardSummary = () => fetchAPI("/dashboard-summary");
 export const getAnalyticsSummary = () => fetchAPI("/analytics-summary");
 export const getReportsSummary = () => fetchAPI("/reports-summary");
 
-<<<<<<< HEAD
-export async function askChatQuestion(question) {
-  const response = await fetch(`${API}/chat/question`, {
-=======
 export function askChatQuestion(question) {
   return fetchJSON(`${API}/chat/question`, {
->>>>>>> final-project
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ question }),
   });
-<<<<<<< HEAD
-
-  if (!response.ok) {
-    throw new Error(`Chat API ${response.status}: ${response.statusText}`);
-  }
-
-  return response.json();
 }
 
-// Backward-compatible individual endpoints.
-=======
-}
-
->>>>>>> final-project
 export const getTotalOrders = () => fetchAPI("/total-orders");
 export const getTotalCustomers = () => fetchAPI("/total-customers");
 export const getTotalRevenue = () => fetchAPI("/total-revenue");
