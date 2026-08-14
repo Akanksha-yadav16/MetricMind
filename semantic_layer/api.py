@@ -37,6 +37,7 @@ def _cors_origins():
         "http://127.0.0.1:3000",
         "http://192.168.1.110:3000",
         "http://192.168.1.108:3000",
+        "http://192.168.1.129:3000",
     ]
 
     return list(dict.fromkeys(origins + defaults))
@@ -416,7 +417,6 @@ def answer_question(question: str):
     # Normalize question
     q = _normalize_question(question)
 
-
     # --------------------------------------------------------
     # TOTAL REVENUE
     # --------------------------------------------------------
@@ -444,7 +444,6 @@ def answer_question(question: str):
             f"₹{revenue:,.2f}."
         )
 
-
     # --------------------------------------------------------
     # TOTAL ORDERS
     # --------------------------------------------------------
@@ -469,7 +468,6 @@ def answer_question(question: str):
             f"The total number of orders is "
             f"{orders}."
         )
-
 
     # --------------------------------------------------------
     # TOTAL CUSTOMERS
@@ -499,7 +497,6 @@ def answer_question(question: str):
             f"{customers}."
         )
 
-
     # --------------------------------------------------------
     # AVERAGE ORDER VALUE
     # --------------------------------------------------------
@@ -524,7 +521,6 @@ def answer_question(question: str):
             f"The average order value is "
             f"₹{aov:,.2f}."
         )
-
 
     # --------------------------------------------------------
     # TOP-SELLING PRODUCT
@@ -568,7 +564,6 @@ def answer_question(question: str):
             f"{quantity} units sold."
         )
 
-
     # --------------------------------------------------------
     # TOP CUSTOMER
     # --------------------------------------------------------
@@ -608,7 +603,6 @@ def answer_question(question: str):
             f"{customer}, with total spending of "
             f"₹{spending:,.2f}."
         )
-
 
     # --------------------------------------------------------
     # REVENUE BY PRODUCT
@@ -655,7 +649,6 @@ def answer_question(question: str):
             + "; ".join(results)
             + "."
         )
-
 
     # --------------------------------------------------------
     # QUANTITY SOLD BY PRODUCT
@@ -710,7 +703,6 @@ def answer_question(question: str):
             + "; ".join(results)
             + "."
         )
-
 
     # --------------------------------------------------------
     # FALLBACK
